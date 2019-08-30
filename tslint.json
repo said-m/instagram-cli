@@ -1,5 +1,15 @@
 {
   "extends": [
     "@said-m/common/tslint.json"
-  ]
+  ],
+  "rules": {
+    "space-before-function-paren": [
+      true,
+      {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ]
+  }
 }

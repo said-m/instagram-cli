@@ -1,6 +1,6 @@
 {
   "name": "@said-m/instagram-cli",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "CLI tool for getting data from Instagram without API tokens",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,9 +8,9 @@
   "repository": "https://github.com/said-m/instagram-cli",
   "license": "MIT",
   "keywords": [
-    "utils",
-    "template",
-    "TypeScript"
+    "instagram",
+    "scraper",
+    "cli"
   ],
   "files": [
     "tslint.json",
@@ -20,9 +20,9 @@
     "dist",
     ".vscode"
   ],
-  "bin": "dist/cli.js",
+  "bin": "dist/cli",
   "scripts": {
-    "start": "ts-node src/cli.ts",
+    "start": "ts-node src/cli",
     "build": "tsc -p ./tsconfig.build.json",
     "validate": "tsc --noEmit",
     "lint": "tslint -p tsconfig.json",
@@ -37,15 +37,12 @@
   "dependencies": {
     "@said-m/common": "^0.0.1",
     "argparse": "^1.0.10",
-    "request-promise": "^4.2.4"
-  },
-  "optionalDependencies": {
-    "request": "^2.88.0"
+    "axios": "^0.19.0",
+    "ts-has-property": "^1.0.1"
   },
   "devDependencies": {
     "@types/argparse": "^1.0.36",
     "@types/node": "^12.7.2",
-    "@types/request-promise": "^4.1.44",
     "husky": "^3.0.4",
     "ts-node": "^8.3.0",
     "tslint": "^5.19.0",

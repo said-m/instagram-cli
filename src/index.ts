@@ -1,2 +1,3 @@
 
-export * from './methods';
+export * from './lib/interfaces';
+export * from './lib/methods';
