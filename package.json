@@ -8,9 +8,9 @@
   "repository": "https://github.com/said-m/instagram-cli",
   "license": "MIT",
   "keywords": [
-    "utils",
-    "template",
-    "TypeScript"
+    "instagram",
+    "scraper",
+    "cli"
   ],
   "files": [
     "tslint.json",
