@@ -22,7 +22,7 @@
   ],
   "bin": "dist/cli",
   "scripts": {
-    "start": "ts-node src/cli.ts",
+    "start": "ts-node src/cli",
     "build": "tsc -p ./tsconfig.build.json",
     "validate": "tsc --noEmit",
     "lint": "tslint -p tsconfig.json",
@@ -37,7 +37,8 @@
   "dependencies": {
     "@said-m/common": "^0.0.1",
     "argparse": "^1.0.10",
-    "axios": "^0.19.0"
+    "axios": "^0.19.0",
+    "ts-has-property": "^1.0.1"
   },
   "devDependencies": {
     "@types/argparse": "^1.0.36",

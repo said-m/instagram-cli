@@ -1,66 +1,45 @@
 #!/usr/bin/env node
 
-import { ArgumentParser } from 'argparse';
-import { readFileSync, writeFile } from 'fs';
+import { Namespace } from 'argparse';
+import { writeFile } from 'fs';
 import { join } from 'path';
+import hasProperty from 'ts-has-property';
 import { getPost } from '../lib/methods';
-
-// TYPES
-
-enum CliKeysEnum {
-  post = 'post',
-}
-
-// ARGUMENTS
-
-const argumentParser = new ArgumentParser({
-  version: JSON.parse(
-    readFileSync(join(__dirname, '..', 'package.json'), 'utf-8'),
-  ).version,
-});
-
-argumentParser.addArgument(
-  getCliArguments(CliKeysEnum.post),
-  {
-    help: 'Вставьте id публикации',
-  },
-);
-
-// BUSINESS LOGIC
-
-function getCliArguments(key: CliKeysEnum): Array<string> {
-  return [
-    `-${ key[0] }`,
-    `--${ key }`,
-  ];
-}
+import { CliFlagsEnum } from './enums/flags';
+import { cliFlags } from './flags';
+import { getFlags } from './flags/helpers';
+import { postFlag } from './flags/post';
+import { FlagArgumentsInterface } from './interfaces/flags';
 
 async function launch(): Promise<void> {
-  const args = argumentParser.parseArgs();
+  const parsedAgrs: Namespace = cliFlags.parseArgs();
+  const args: FlagArgumentsInterface = { ...parsedAgrs };
 
-  if (!args.post) {
-    const keys = getCliArguments(CliKeysEnum.post);
-
+  if (!hasProperty(args, CliFlagsEnum.post)) {
     return console.log(
-      `Необходимо задать аргумент "${ keys.join('"/"') }".\n`,
+      `Необходимо задать аргумент "${ getFlags(postFlag).join('"/"') }".\n`,
       'Помощь: "-h"',
     );
   }
 
-  try {
-    const result = await getPost(args.post);
-    const fileName = args.post + ' - instagram-post.json';
+  // @ts-ignore
+  const result = await getPost(args.post);
 
+  if (!result) {
+    return console.log('Не удалось получить данные публикации.');
+  }
+
+  const fileName = args.post + ' - instagram-post.json';
+
+  try {
     writeFile(
       join(process.cwd(), fileName),
       JSON.stringify(result, null, 2),
       () => console.log(`Результат записан в файл "${ fileName }" в текущем каталоге`),
     );
   } catch (error) {
-    console.error('Ошибка при выполнении команды:', error);
+    console.error('Ошибка при записи результата в файл:', error);
   }
 }
-
-// LAUNCHER
 
 launch().catch();
