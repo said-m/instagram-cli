@@ -1,6 +1,6 @@
 {
   "name": "@said-m/instagram-cli",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "CLI tool for getting data from Instagram without API tokens",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

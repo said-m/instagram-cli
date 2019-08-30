@@ -2,9 +2,6 @@
 
 **Модуль** и **CLI** для вытягивания данных публикаций в **Instagram** без запросов к настоящей **API**-хе.
 
-> Пока что, это пробная версия. Никаких SemVer-ов, SOLID-ных кодов.
-> Только чистый говнокод на коленке.
-
 ## Установка / Installing
 
 ### CLI
@@ -12,6 +9,8 @@
 ```bash
 npm install -g @said-m/instagram-cli
 ```
+
+> You can test it without installation, see [Usage](#%d0%98%d1%81%d0%bf%d0%be%d0%bb%d1%8c%d0%b7%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5--usage)
 
 ### NPM-module
 
@@ -26,7 +25,7 @@ yarn add @said-m/instagram-cli
 ```bash
 instagram-cli -p $POST_KEY
 ```
-or (w/o installation)
+or **(w/o installation)**:
 ```bash
 npx @said-m/instagram-cli -p $POST_KEY
 ```
