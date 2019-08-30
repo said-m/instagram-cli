@@ -1,5 +1,5 @@
-import { sets, video } from '.';
 import { IgShortcodeMediaInterface, IgStickyNodeInterface, MediaItemInterface } from '../../interfaces';
+import { sets, video } from '../simple';
 
 export function media(
   data: IgShortcodeMediaInterface,

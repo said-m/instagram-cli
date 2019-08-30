@@ -3,7 +3,7 @@
 import { ArgumentParser } from 'argparse';
 import { readFileSync, writeFile } from 'fs';
 import { join } from 'path';
-import { getPost } from './methods';
+import { getPost } from '../lib/methods';
 
 // TYPES
 
@@ -35,7 +35,7 @@ function getCliArguments(key: CliKeysEnum): Array<string> {
   ];
 }
 
-async function launch() {
+async function launch(): Promise<void> {
   const args = argumentParser.parseArgs();
 
   if (!args.post) {
