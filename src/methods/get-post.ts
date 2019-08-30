@@ -1,4 +1,4 @@
-import requestPromise from 'request-promise';
+import Axios from 'axios';
 import { IgPostInterface, IgShortcodeMediaInterface, IgStickyNodeInterface, MediaItemInterface, MediaSetInterface, MediaVideoInterface, PostInterface } from '../interfaces';
 
 export async function getPost(id: string): Promise<PostInterface | undefined> {
@@ -10,17 +10,20 @@ export async function getPost(id: string): Promise<PostInterface | undefined> {
 
   try {
     const {
-      graphql: {
-        shortcode_media: data,
+      data: {
+        graphql: {
+          shortcode_media: data,
+        },
       },
-    }: IgPostInterface = await requestPromise.get({
-      uri: `https://instagram.com/p/${ id }`,
-      qs: {
-        __a: 1,
+    } = await Axios.get<IgPostInterface>(
+      `https://instagram.com/p/${ id }`,
+      {
+        params: {
+          __a: 1,
+        },
+        responseType: 'json',
       },
-      json: true,
-      gzip: true,
-    });
+    );
 
     return {
       id: data.id,

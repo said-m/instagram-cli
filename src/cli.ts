@@ -54,7 +54,7 @@ async function launch() {
     writeFile(
       join(process.cwd(), fileName),
       JSON.stringify(result, null, 2),
-      () => console.log('Результат записан в файл "fileName" в текущем каталоге'),
+      () => console.log(`Результат записан в файл "${ fileName }" в текущем каталоге`),
     );
   } catch (error) {
     console.error('Ошибка при выполнении команды:', error);
