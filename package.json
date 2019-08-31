@@ -1,6 +1,6 @@
 {
   "name": "@said-m/instagram-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CLI tool for getting data from Instagram without API tokens",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,7 +20,7 @@
     "dist",
     ".vscode"
   ],
-  "bin": "dist/cli",
+  "bin": "dist/cli/index.js",
   "scripts": {
     "start": "ts-node src/cli",
     "build": "tsc -p ./tsconfig.build.json",
