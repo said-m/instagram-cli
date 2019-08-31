@@ -20,7 +20,7 @@
     "dist",
     ".vscode"
   ],
-  "bin": "dist/cli",
+  "bin": "dist/cli/index.js",
   "scripts": {
     "start": "ts-node src/cli",
     "build": "tsc -p ./tsconfig.build.json",
