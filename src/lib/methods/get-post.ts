@@ -31,7 +31,7 @@ export async function getPost(id: string): Promise<
     }
   };
 
-  const data = await (loadData());
+  const data = await loadData();
 
   if (!data) {
     return;

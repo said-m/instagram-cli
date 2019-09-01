@@ -33,6 +33,6 @@ export interface MediaSetInterface {
 }
 
 export interface MediaVideoInterface {
-  url: IgStickyNodeInterface['video_url'];
-  views: IgStickyNodeInterface['video_view_count'];
+  url: Required<IgStickyNodeInterface>['video_url'];
+  views: Required<IgStickyNodeInterface>['video_view_count'];
 }
