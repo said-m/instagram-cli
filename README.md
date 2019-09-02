@@ -1,4 +1,4 @@
-# @said-m/**instagram-post**
+# @said-m/**instagram-cli**
 
 **Модуль** и **CLI** для вытягивания данных публикаций в **Instagram** без запросов к настоящей **API**-хе.
 
@@ -10,7 +10,7 @@
 npm install -g @said-m/instagram-cli
 ```
 
-> You can test it without installation, see [Usage](#%d0%98%d1%81%d0%bf%d0%be%d0%bb%d1%8c%d0%b7%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5--usage)
+> You can test it without installation, see [Usage](#Использование--usage)
 
 ### NPM-module
 
@@ -39,17 +39,115 @@ import { getPost } from '@said-m/instagram-cli';
 
 const postKey: string = /* ... */;
 
-try {
-  const postData = await getPost(postKey);
+const app = async () => {
+  try {
+    const postData = await getPost(postKey);
 
-  // Работа с результатом - `postData`.
-} catch {
-  // Обработка ошибки
+    // Работа с результатом - `postData`.
+  } catch {
+    // Обработка ошибки
+  }
 }
+
+app();
 ```
 
-> Интерфейс: `key` => Promise<[`PostInterface`](src/interfaces/post.ts) | `undefined`>.
+> Интерфейс: `key` => Promise<[`PostInterface`] | `undefined`>.
+
+## Методы / Methods
+
+> Список всех доступных флагов можно просмотреть в меню помощи:
+```bash
+instagram-cli -h
+```
+
+### Данные публикации / Post's data
+
+Возвращает json-объект со основной информацией о файле.
+
+#### CLI
+
+Будет создан json-файл с указанным содержимым.
+
+```bash
+instagram-cli -p $POST_KEY
+```
+
+#### Module
+
+Интерфейс возвращаемого объекта: [`PostInterface`].
+
+```ts
+import { getPost } from '@said-m/instagram-cli';
+
+getPost(postKey).then(postData => {
+  if (!postData) {
+    console.error('Не удалось');
+  }
+
+  postData./* ... */;
+});
+```
+
+### Медиа-файлы публикации / Media-files
+
+Возвращает json-объект со основной информацией о файле.
+
+#### CLI
+
+Будет создан json-файл с указанным содержимым.
+
+```bash
+instagram-cli -m $POST_KEY
+```
+
+#### Module
+
+Интерфейс возвращаемого объекта: [`GetMediaOutputInterface`].
+
+* **`byShortcode`**(name: `string`) => Promise<[`GetMediaOutputInterface`]>
+  ```ts
+  import { GetMedia } from '@said-m/instagram-cli';
+
+  const getMedia = new GetMedia();
+  const postKey:string = /* ... */;
+
+  getMedia.byShortcode(postKey).then(media => {
+    // Не удалось получить данные медиа
+    if (!media) return;
+
+    // Публикации могут содержиать несколько медиа
+    media.forEach((thisMedia, thisMediaIndex) => {
+      // Если не удалось получить файл
+      if (!thisMedia) return;
+
+      // Записываем в файл
+      const fileName = thisMediaIndex + '.' + thisMedia.extension;
+      thisMedia.stream.pipe(createWriteStream(fileName));
+    });
+  });
+  ```
+* **`byPostData`**(value: [`PostInterface`]) => [`GetMediaOutputInterface`] \
+  Если данные поста уже загружены, то используем их, чтобы сэкономить трафик:
+  ```ts
+  // ...
+
+  getPost(postKey).then(postData => {
+    if (!postData) return;
+
+    // Запрашиваем медиа по имеющимся данным публикации
+    const media = getMedia.byPostData(postData);
+
+    if (!media) return;
+
+    media.forEach(/* ... */);
+  });
+  ```
 
 ## Лицензия / License
 
 Данный проект распространяется по [**MIT License**](LICENSE).
+
+
+[`PostInterface`]: src/lib/utils/interfaces/post.ts
+[`GetMediaOutputInterface`]: src/lib/methods/utils/interfaces/get-media.ts
