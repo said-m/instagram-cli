@@ -1,4 +1,4 @@
-import { IgShortcodeMediaInterface, IgStickyNodeInterface, MediaItemInterface } from '../../interfaces';
+import { IgShortcodeMediaInterface, IgStickyNodeInterface, MediaItemInterface } from '../../utils/interfaces';
 import { sets, video } from '../simple';
 
 export function media(

@@ -1,4 +1,4 @@
-import { IgStickyNodeInterface, MediaSetInterface } from '../../interfaces';
+import { IgStickyNodeInterface, MediaSetInterface } from '../../utils/interfaces';
 
 export function sets(
   data: IgStickyNodeInterface,

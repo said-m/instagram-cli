@@ -1,6 +1,6 @@
 import Axios from 'axios';
-import { IgPostInterface, PostInterface } from '../interfaces';
 import { post } from '../mappers/complex';
+import { IgPostInterface, PostInterface } from '../utils/interfaces';
 
 export async function getPost(id: string): Promise<
   PostInterface | undefined

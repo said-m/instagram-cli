@@ -1,4 +1,4 @@
-import { IgShortcodeMediaInterface } from '../../interfaces';
+import { IgShortcodeMediaInterface } from '../../utils/interfaces';
 
 export function text(
   data: IgShortcodeMediaInterface,

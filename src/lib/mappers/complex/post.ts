@@ -1,4 +1,4 @@
-import { IgPostInterface, PostInterface } from '../../interfaces';
+import { IgPostInterface, PostInterface } from '../../utils/interfaces';
 import { location, media, text } from '../simple';
 
 export function post(

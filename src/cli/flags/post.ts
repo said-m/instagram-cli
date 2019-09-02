@@ -1,6 +1,6 @@
-import { CliFlagsEnum } from '../enums/flags';
-import { FlagDecriptionInterface } from '../interfaces/flags';
-import { createFlag } from './helpers';
+import { CliFlagsEnum } from '../utils/enums/flags';
+import { FlagDecriptionInterface } from '../utils/interfaces/flags';
+import { createFlag } from './utils/helpers';
 
 export const postFlag: FlagDecriptionInterface = [
   createFlag(CliFlagsEnum.post),

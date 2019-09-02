@@ -3,13 +3,13 @@
 import { Namespace } from 'argparse';
 import { createWriteStream, mkdirSync } from 'fs';
 import { join } from 'path';
-import { allSettled } from '../lib/helpers/all-settled';
 import { GetMedia } from '../lib/methods';
-import { CliFlagsEnum } from './enums/flags';
+import { allSettled } from '../lib/utils/helpers/all-settled';
 import { cliFlags } from './flags';
-import { getFlagArgument, getFlags } from './flags/helpers';
 import { postFlag } from './flags/post';
-import { FlagArgumentsInterface } from './interfaces/flags';
+import { getFlagArgument, getFlags } from './flags/utils/helpers';
+import { CliFlagsEnum } from './utils/enums/flags';
+import { FlagArgumentsInterface } from './utils/interfaces/flags';
 
 async function launch(): Promise<void> {
   const parsedAgrs: Namespace = cliFlags.parseArgs();

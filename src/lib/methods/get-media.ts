@@ -2,10 +2,10 @@ import Axios, { AxiosResponse } from 'axios';
 import { Writable } from 'stream';
 import hasProperty from 'ts-has-property';
 import { getPost } from '.';
-import { mimes } from '../constants';
-import { HttpHeadersEnum } from '../enums';
-import { extensionFromUrl } from '../helpers';
-import { PostInterface } from '../interfaces';
+import { mimes } from '../utils/constants';
+import { HttpHeadersEnum } from '../utils/enums';
+import { extensionFromUrl } from '../utils/helpers';
+import { PostInterface } from '../utils/interfaces';
 import { GetMediaMimesEnum } from './utils/enums';
 import { GetMediaItemInterface, GetMediaOutputInterface } from './utils/interfaces';
 
