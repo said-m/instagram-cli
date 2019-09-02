@@ -1,9 +1,10 @@
 import { ArgumentParser } from 'argparse';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { mediaFlag } from './media';
 import { postFlag } from './post';
 
-const _cliFlags = new ArgumentParser({
+const cliFlags = new ArgumentParser({
   version: JSON.parse(
     readFileSync(
       join(__dirname, '..', '..', '..', 'package.json'),
@@ -12,6 +13,7 @@ const _cliFlags = new ArgumentParser({
   ).version,
 });
 
-_cliFlags.addArgument(...postFlag);
+cliFlags.addArgument(...postFlag);
+cliFlags.addArgument(...mediaFlag);
 
-export const cliFlags = _cliFlags;
+export { cliFlags, };
