@@ -1,62 +1,109 @@
-import { isArray } from '@said-m/common';
-import Axios from 'axios';
+import Axios, { AxiosResponse } from 'axios';
 import { Writable } from 'stream';
+import hasProperty from 'ts-has-property';
 import { getPost } from '.';
+import { mimes } from '../constants';
+import { HttpHeadersEnum } from '../enums';
+import { extensionFromUrl } from '../helpers';
+import { PostInterface } from '../interfaces';
+import { GetMediaMimesEnum } from './utils/enums';
+import { GetMediaItemInterface, GetMediaOutputInterface } from './utils/interfaces';
 
-const fileExtension = function (uri: string): string | undefined {
-  const splited = uri.match(/\.([^\./\?]+)($|\?)/);
+export class GetMedia {
+  static readonly allowedMimes: Array<GetMediaMimesEnum> = Object.values(GetMediaMimesEnum);
 
-  return isArray(splited) ? splited[1] : undefined;
-};
+  async byShortcode(name: string): Promise<
+    GetMediaOutputInterface
+  > {
+    const data = await getPost(name);
 
-export async function getMedia(id: string): Promise<
-  Array<Promise<
-    {
-      stream: Writable,
-      fileExtension: string,
-    } | undefined
-  >> | undefined
-> {
-  if (!id) {
-    console.log('Необходимо передать id публикации');
+    if (!data) {
+      return;
+    }
 
-    return;
+    return this.byPostData(data);
   }
 
-  const data = await getPost(id);
+  byPostData(value: PostInterface): GetMediaOutputInterface {
+    const mediaUrlList = value.media.map(
+      thisMedia => thisMedia.video
+        ? thisMedia.video.url
+        : thisMedia.url,
+    );
 
-  if (!data) {
-    return;
+    return mediaUrlList.map(
+      thisUrl => this.readMedia(thisUrl),
+    );
   }
 
-  const loadImage = (uri: string): Promise<
-    {
-      stream: Writable,
-      fileExtension: string,
-    } | undefined
-  > => new Promise(async (response, reject) => {
+  private async readMedia(url: string): Promise<
+    GetMediaItemInterface | undefined
+  > {
+    const fileMime = await this.isExistMedia(url);
+
+    if (!fileMime) {
+      return;
+    }
+
+    const response = await this.getStream(url);
+
+    if (!response) {
+      return;
+    }
+
+    return {
+      stream: response.data,
+      extension: fileMime === true
+        ? extensionFromUrl(url) || 'unknown'
+        : mimes[fileMime].extensions[0],
+    };
+  }
+
+  private async isExistMedia(url: string, isStrict = true): Promise<
+    GetMediaMimesEnum | boolean
+  > {
     try {
-      const { data } = await Axios.get<Writable>(
-        uri,
+      const { headers } = await Axios.head<void>(url);
+
+      if (isStrict) {
+        return (
+          hasProperty(headers, HttpHeadersEnum.contentType)
+          && GetMedia.allowedMimes.find(
+            thisMime => thisMime === headers[HttpHeadersEnum.contentType],
+          )
+        ) || false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error(
+        'Ошибка обращения к ресурсу:',
+        error,
+      );
+
+      return false;
+    }
+  }
+
+  private async getStream(url: string): Promise<
+    AxiosResponse<Writable> | undefined
+  > {
+    try {
+      const response = await Axios.get<Writable>(
+        url,
         {
           responseType: 'stream',
         },
       );
 
-      response({
-        stream: data,
-        fileExtension: fileExtension(uri) || 'unknown',
-      });
+      return response;
     } catch (error) {
-      console.error('Ошибка при получении медиа-файла');
-    }
-  });
+      console.error(
+        'Ошибка при получении ресурса:',
+        error,
+      );
 
-  return data.media.map(async thisMedia => {
-    if (thisMedia.video) {
-      return loadImage(thisMedia.video.url);
+      return;
     }
-
-    return loadImage(thisMedia.url);
-  });
+  }
 }

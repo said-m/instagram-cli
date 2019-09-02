@@ -3,7 +3,7 @@ import { CliFlagsEnum } from '../../enums/flags';
 import { FlagArgumentsInterface } from '../../interfaces/flags';
 
 export const getFlagArgument = (
-  args: FlagArgumentsInterface,
+  args: Partial<FlagArgumentsInterface>,
   flag: CliFlagsEnum,
 ): string | undefined => {
   if (!hasProperty(args, flag)) {

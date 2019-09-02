@@ -3,21 +3,21 @@
 import { Namespace } from 'argparse';
 import { createWriteStream, mkdirSync } from 'fs';
 import { join } from 'path';
-import { implementation as allSettled } from 'promise.allsettled';
-import { Writable } from 'stream';
-import hasProperty from 'ts-has-property';
-import { getMedia } from '../lib/methods';
+import { allSettled } from '../lib/helpers/all-settled';
+import { GetMedia } from '../lib/methods';
 import { CliFlagsEnum } from './enums/flags';
 import { cliFlags } from './flags';
-import { getFlags } from './flags/helpers';
+import { getFlagArgument, getFlags } from './flags/helpers';
 import { postFlag } from './flags/post';
 import { FlagArgumentsInterface } from './interfaces/flags';
 
 async function launch(): Promise<void> {
   const parsedAgrs: Namespace = cliFlags.parseArgs();
-  const args: FlagArgumentsInterface = { ...parsedAgrs };
+  const args: Partial<FlagArgumentsInterface> = { ...parsedAgrs };
 
-  if (!hasProperty(args, CliFlagsEnum.post)) {
+  const postArg = getFlagArgument(args, CliFlagsEnum.post);
+
+  if (!postArg) {
     return console.log(
       `Необходимо задать аргумент "${getFlags(postFlag).join('"/"')}".\n`,
       'Помощь: "-h"',
@@ -26,7 +26,7 @@ async function launch(): Promise<void> {
 
   const fileName = args.post + ' - instagram-post';
 
-  const media = await getMedia(args.post);
+  const media = await (new GetMedia()).byShortcode(postArg);
 
   if (!media) {
     return console.log('Не получилось выгрузить изображения');
@@ -44,7 +44,7 @@ async function launch(): Promise<void> {
 
   ensureDirSync(fileName);
 
-  const downloads: Array<Writable> = [];
+  const downloads = [];
   for (const thisMediaIndex in media) {
     const thisMedia = await media[thisMediaIndex];
 
@@ -52,10 +52,20 @@ async function launch(): Promise<void> {
       continue;
     }
 
-    const path = join(process.cwd(), fileName, thisMediaIndex + '.' + thisMedia.fileExtension);
+    const path = join(process.cwd(), fileName, thisMediaIndex + '.' + thisMedia.extension);
 
+    console.log('начинаем запись ', thisMediaIndex);
     downloads.push(
-      thisMedia.stream.pipe(createWriteStream(path)),
+      new Promise(
+        resolve => thisMedia.stream.pipe(createWriteStream(path)).on(
+          'close',
+          () => {
+            console.log('Заканчиваем', thisMediaIndex);
+
+            resolve();
+          },
+        ),
+      ),
     );
   }
 
@@ -63,8 +73,11 @@ async function launch(): Promise<void> {
     await allSettled(downloads);
 
     console.log('---- saved ----');
-  } catch {
-    console.error('Не получилось сохранить медиа');
+  } catch (error) {
+    console.error(
+      'Не получилось сохранить медиа',
+      error,
+    );
   }
 
 
