@@ -1,9 +1,9 @@
 import hasProperty from 'ts-has-property';
-import { CliFlagsEnum } from '../../enums/flags';
-import { FlagArgumentsInterface } from '../../interfaces/flags';
+import { CliFlagsEnum } from '../../../utils/enums/flags';
+import { FlagArgumentsInterface } from '../../../utils/interfaces/flags';
 
 export const getFlagArgument = (
-  args: FlagArgumentsInterface,
+  args: Partial<FlagArgumentsInterface>,
   flag: CliFlagsEnum,
 ): string | undefined => {
   if (!hasProperty(args, flag)) {

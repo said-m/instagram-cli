@@ -1,7 +1,7 @@
 {
   "name": "@said-m/instagram-cli",
-  "version": "0.1.1",
-  "description": "CLI tool for getting data from Instagram without API tokens",
+  "version": "0.2.0",
+  "description": "CLI tool and Module for getting data from Instagram without API tokens",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Said Magomedov <saids.inbox@gmail.com>",
@@ -31,13 +31,14 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint"
+      "pre-commit": "yarn lint & yarn validate"
     }
   },
   "dependencies": {
     "@said-m/common": "^0.0.1",
     "argparse": "^1.0.10",
     "axios": "^0.19.0",
+    "mime-db": "^1.41.0",
     "ts-has-property": "^1.0.1"
   },
   "devDependencies": {

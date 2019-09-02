@@ -7,5 +7,5 @@ export type FlagDecriptionInterface = [
 ];
 
 export type FlagArgumentsInterface  = {
-  [key in CliFlagsEnum]?: string;
+  [key in CliFlagsEnum]: string;
 };

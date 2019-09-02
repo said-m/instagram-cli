@@ -1,4 +1,4 @@
-import { IgStickyNodeInterface, MediaVideoInterface } from '../../interfaces';
+import { IgStickyNodeInterface, MediaVideoInterface } from '../../utils/interfaces';
 
 export function video(
   data: IgStickyNodeInterface,
