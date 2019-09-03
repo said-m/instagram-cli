@@ -1,0 +1,27 @@
+language: node_js
+
+node_js:
+  - '10'
+
+branches:
+  only:
+    - master
+
+install: yarn --no-progress --frozen-lockfile --ignore-engines
+
+cache:
+  yarn: true
+  directories:
+    - 'node_modules'
+
+# no tests yet
+script: yarn validate
+
+deploy:
+  provider: npm
+  email: '$NPM_EMAIL'
+  api_key: '$NPM_API_TOKEN'
+  skip_cleanup: true
+  on:
+    tags: true
+    branch: master
