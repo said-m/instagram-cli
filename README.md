@@ -10,7 +10,8 @@
 npm install -g @said-m/instagram-cli
 ```
 
-> You can test it without installation, see [Usage](#Использование--usage)
+> Можно протестировать и без установки, см.: [Использование](#Использование--Usage); \
+> You can test it without installation, see [Usage](#Использование--Usage).
 
 ### NPM-module
 
@@ -23,14 +24,17 @@ yarn add @said-m/instagram-cli
 ### CLI
 
 ```bash
-instagram-cli -p $POST_KEY
+instagram-cli $POST_KEY -p -m
 ```
 or **(w/o installation)**:
 ```bash
-npx @said-m/instagram-cli -p $POST_KEY
+npx @said-m/instagram-cli $POST_KEY -p -m
 ```
 
 > где `$POST_KEY` ищем в URI публикации так: instagram.com/p/`$POST_KEY`
+
+> Список доступных команд и их предназначение: [Методы](#Методы--Methods) \
+> About flags, see [Methods](#Методы--Methods)
 
 ### NPM-module
 
@@ -56,7 +60,7 @@ app();
 
 ## Методы / Methods
 
-> Список всех доступных флагов можно просмотреть в меню помощи:
+Список всех доступных флагов можно просмотреть в меню помощи:
 ```bash
 instagram-cli -h
 ```
@@ -70,7 +74,7 @@ instagram-cli -h
 Будет создан json-файл с указанным содержимым.
 
 ```bash
-instagram-cli -p $POST_KEY
+instagram-cli $POST_KEY -p
 ```
 
 #### Module
@@ -98,7 +102,7 @@ getPost(postKey).then(postData => {
 Будет создан json-файл с указанным содержимым.
 
 ```bash
-instagram-cli -m $POST_KEY
+instagram-cli $POST_KEY -m
 ```
 
 #### Module
