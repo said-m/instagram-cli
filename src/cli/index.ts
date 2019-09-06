@@ -15,24 +15,48 @@ async function launch(): Promise<void> {
   const parsedAgrs: Namespace = cliFlags.parseArgs();
   const args: Partial<FlagArgumentsInterface> = { ...parsedAgrs };
 
+  const idArg = getFlagArgument(args, CliFlagsEnum.id);
   const postArg = getFlagArgument(args, CliFlagsEnum.post);
   const mediaArg = getFlagArgument(args, CliFlagsEnum.media);
 
-  if (!(postArg || mediaArg)) {
-    return console.log('Нужно хоть что-то требовать от проги');
+  if (!idArg) {
+    return console.log('Необходимо указать ключ публикации');
   }
 
-  const fileName = (postArg || mediaArg) + ' - instagram-cli';
+  if (!(postArg || mediaArg)) {
+    return console.info('Нужно хоть что-то требовать от проги');
+  }
+
+  const postData = await getPost(idArg);
+
+  if (!postData) {
+    return console.log('Не удалось получить данные публикации.');
+  }
+
+  const locationName = idArg + ' - instagram-cli';
   const currentFolder = process.cwd();
 
-  if (mediaArg) {
-    const media = await (new GetMedia()).byShortcode(mediaArg);
+  if (postArg) {
+    const fileName = join(
+      locationName,
+      mediaArg ? 'data' : '',
+    ) + '.json';
 
-    if (!media) {
-      return console.error('Не удалось получить медиа файлы');
+    try {
+      writeFile(
+        join(currentFolder, fileName),
+        JSON.stringify(postData, null, 2),
+        () => console.log(`Данные публикации записаны в файл "${ fileName }"`),
+      );
+    } catch (error) {
+      console.error('Ошибка при записи данных публикации в файл:', error);
     }
+  }
 
-    const folderPath = join(currentFolder, fileName);
+  if (mediaArg) {
+    const media = await (new GetMedia()).byPostData(postData);
+
+    const folderPath = join(currentFolder, locationName);
     const isFolderCreated = await createDir(folderPath);
 
     if (!isFolderCreated) {
@@ -41,7 +65,7 @@ async function launch(): Promise<void> {
 
     const downloads = [];
     for (const thisMediaIndex in media) {
-      const thisMedia = await media[thisMediaIndex];
+      const thisMedia = await media[parseInt(thisMediaIndex)];
 
       if (!thisMedia) {
         continue;
@@ -71,42 +95,19 @@ async function launch(): Promise<void> {
 
     downloaded.forEach(
       (thisDownload, thisDownloadIndex) => {
-        switch (thisDownload.status) {
-          case allSettledStatusEnum.o:
-            return console.warn('Не удалось вовремя сохранить медиа:', thisDownloadIndex);
-          case allSettledStatusEnum.r:
-            return console.error(
-              'Ошибка при сохранении медиа:',
-              thisDownloadIndex,
-              thisDownload.reason,
-            );
+        if (thisDownload.status === allSettledStatusEnum.r) {
+          return console.error(
+            'Ошибка при сохранении медиа:',
+            thisDownloadIndex,
+            thisDownload.reason,
+          );
         }
       },
     );
 
     console.log(`Результат сохранения медиа ищите в папке ${
-      fileName
+      locationName
     } в текущем каталоге`);
-  }
-
-  if (postArg) {
-    const result = await getPost(postArg);
-
-    if (!result) {
-      return console.log('Не удалось получить данные публикации.');
-    }
-
-    try {
-      writeFile(
-        join(currentFolder, fileName + '.json'),
-        JSON.stringify(result, null, 2),
-        () => console.log(`Данные публикации записаны в файл "${
-          fileName + '.json'
-        }" в текущем каталоге`),
-      );
-    } catch (error) {
-      console.error('Ошибка при записи данных публикации в файл:', error);
-    }
   }
 }
 

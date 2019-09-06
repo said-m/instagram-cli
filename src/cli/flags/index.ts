@@ -3,6 +3,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { mediaFlag } from './media';
 import { postFlag } from './post';
+import { shortcodeArg } from './shortcode';
 
 const cliFlags = new ArgumentParser({
   version: JSON.parse(
@@ -13,6 +14,7 @@ const cliFlags = new ArgumentParser({
   ).version,
 });
 
+cliFlags.addArgument(...shortcodeArg);
 cliFlags.addArgument(...postFlag);
 cliFlags.addArgument(...mediaFlag);
 
