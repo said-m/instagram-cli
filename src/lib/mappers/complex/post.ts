@@ -1,8 +1,8 @@
-import { IgPostInterface, PostInterface } from '../../utils/interfaces';
+import { IgResponseInterface, PostInterface } from '../../utils/interfaces';
 import { location, media, text } from '../simple';
 
 export function post(
-  input: IgPostInterface,
+  input: IgResponseInterface,
 ): PostInterface | undefined {
   try {
     const data = input.graphql.shortcode_media;
@@ -25,7 +25,7 @@ export function post(
     };
   } catch (error) {
     console.error(
-      'Не удалось распасить данные.',
+      'Не удалось распарсить данные.',
       'Возможно, Instagram изменил структуру объекта.',
       error,
     );

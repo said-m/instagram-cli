@@ -16,4 +16,4 @@ const cliFlags = new ArgumentParser({
 cliFlags.addArgument(...postFlag);
 cliFlags.addArgument(...mediaFlag);
 
-export { cliFlags, };
+export { cliFlags };
