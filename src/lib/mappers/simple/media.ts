@@ -1,17 +1,18 @@
-import { IgShortcodeMediaInterface, IgStickyNodeInterface, MediaItemInterface } from '../../utils/interfaces';
+import { isSidecardsPost } from '../../utils/helpers/is-sidecards-post';
+import { IgMediaInterface, IgPostInterface, MediaItemInterface } from '../../utils/interfaces';
 import { sets, video } from '../simple';
 
 export function media(
-  data: IgShortcodeMediaInterface,
+  data: IgPostInterface,
 ): Array<MediaItemInterface> {
-  let list: Array<IgStickyNodeInterface>;
+  let list: Array<IgMediaInterface>;
 
-  if (!data.edge_sidecar_to_children) {
-    list = [data];
-  } else {
+  if (isSidecardsPost(data)) {
     list = data.edge_sidecar_to_children.edges.map(
       thisChild => thisChild.node,
     );
+  } else {
+    list = [data];
   }
 
   return list.map<MediaItemInterface>(

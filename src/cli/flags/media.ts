@@ -5,6 +5,7 @@ import { createFlag } from './utils/helpers';
 export const mediaFlag: FlagDecriptionInterface = [
   createFlag(CliFlagsEnum.media),
   {
-    help: 'Вставьте id публикации',
+    help: 'Скачивание медиа-файлов публикации',
+    action: 'storeTrue',
   },
 ];

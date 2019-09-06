@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import { post } from '../mappers/complex';
-import { IgPostInterface, PostInterface } from '../utils/interfaces';
+import { IgResponseInterface, PostInterface } from '../utils/interfaces';
 
 export async function getPost(id: string): Promise<
   PostInterface | undefined
@@ -12,10 +12,10 @@ export async function getPost(id: string): Promise<
   }
 
   const loadData = async (): Promise<
-    IgPostInterface | undefined
+    IgResponseInterface | undefined
   > => {
     try {
-      const { data } = await Axios.get<IgPostInterface>(
+      const { data } = await Axios.get<IgResponseInterface>(
         `https://instagram.com/p/${ id }`,
         {
           params: {

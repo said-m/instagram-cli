@@ -5,6 +5,7 @@ import { createFlag } from './utils/helpers';
 export const postFlag: FlagDecriptionInterface = [
   createFlag(CliFlagsEnum.post),
   {
-    help: 'Вставьте id публикации',
+    help: 'Получение данных публикации',
+    action: 'storeTrue',
   },
 ];

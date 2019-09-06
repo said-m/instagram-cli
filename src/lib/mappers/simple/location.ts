@@ -1,11 +1,10 @@
-import { IgShortcodeMediaInterface } from '../../utils/interfaces';
+import { IgPostInterface } from '../../utils/interfaces';
 
 export function location(
-  data: IgShortcodeMediaInterface,
+  data: IgPostInterface,
 ): string | undefined {
-  try {
-    return data.location.name;
-  } catch {
-    return;
-  }
+  return (
+    data.location && data.location.name
+  ) ||
+  undefined;
 }

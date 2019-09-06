@@ -1,38 +1,39 @@
-import { IgDimensionsInterface, IgEdgeMediaPreviewInterface, IgFluffyNodeInterface, IgLocationInterface, IgShortcodeMediaInterface, IgStickyNodeInterface, IgTentacledNodeInterface, IgUserClassInterface } from '.';
+import { IgDimensionsInterface, IgLocationInterface } from '.';
+import { IgCaptionInterface, IgMediaInterface, IgPostInterface, IgPostOwnerInterface, IgPreviewLikesInterface, IgTaggedUserInterface } from './instagram';
 
 export interface PostInterface {
-  id: IgShortcodeMediaInterface['id'];
+  id: IgPostInterface['id'];
   author: AuthorInterface;
-  time: IgShortcodeMediaInterface['taken_at_timestamp'];
-  likes: IgEdgeMediaPreviewInterface['count'];
+  time: IgPostInterface['taken_at_timestamp'];
+  likes: IgPreviewLikesInterface['count'];
   media: Array<MediaItemInterface>;
-  isAd: IgShortcodeMediaInterface['is_ad'];
-  text?: IgFluffyNodeInterface['text'];
+  isAd: IgPostInterface['is_ad'];
+  text?: IgCaptionInterface['text'];
   location?: IgLocationInterface['name'];
 }
 
 export interface AuthorInterface {
-  id: IgUserClassInterface['id'];
-  userName: IgUserClassInterface['username'];
-  fullName?: IgUserClassInterface['full_name'];
-  isVerified: IgUserClassInterface['is_verified'];
-  avatar: IgUserClassInterface['profile_pic_url'];
+  id: IgPostOwnerInterface['id'];
+  userName: IgPostOwnerInterface['username'];
+  fullName?: IgPostOwnerInterface['full_name'];
+  isVerified: IgPostOwnerInterface['is_verified'];
+  avatar: IgPostOwnerInterface['profile_pic_url'];
 }
 
 export interface MediaItemInterface extends MediaSetInterface {
-  id: IgStickyNodeInterface['id'];
-  shortcode: IgStickyNodeInterface['shortcode'];
+  id: IgMediaInterface['id'];
+  shortcode: IgMediaInterface['shortcode'];
   sets: Array<MediaSetInterface>;
-  tagged: Array<IgTentacledNodeInterface>;
+  tagged: Array<IgTaggedUserInterface>;
   video?: MediaVideoInterface;
 }
 
 export interface MediaSetInterface {
-  url: IgShortcodeMediaInterface['display_url'];
+  url: IgPostInterface['display_url'];
   dimensions: IgDimensionsInterface;
 }
 
 export interface MediaVideoInterface {
-  url: Required<IgStickyNodeInterface>['video_url'];
-  views: Required<IgStickyNodeInterface>['video_view_count'];
+  url: Required<IgMediaInterface>['video_url'];
+  views: Required<IgMediaInterface>['video_view_count'];
 }

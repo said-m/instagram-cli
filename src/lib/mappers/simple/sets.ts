@@ -1,7 +1,7 @@
-import { IgStickyNodeInterface, MediaSetInterface } from '../../utils/interfaces';
+import { IgMediaInterface, MediaSetInterface } from '../../utils/interfaces';
 
 export function sets(
-  data: IgStickyNodeInterface,
+  data: IgMediaInterface,
 ): Array<MediaSetInterface> {
   if (!data.display_resources) {
     return [

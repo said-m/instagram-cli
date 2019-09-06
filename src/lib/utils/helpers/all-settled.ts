@@ -13,9 +13,6 @@ export type allSEttledOutputInterface<Value> = Array<
   {
     status: allSettledStatusEnum.r,
     reason: Error,
-  } |
-  {
-    status: allSettledStatusEnum.o,
   }
 >;
 
@@ -23,22 +20,11 @@ export const allSettled = async <T>(
   promises: Array<
     Promise<T>
   >,
-  timeout = 15000,
 ): Promise<
   allSEttledOutputInterface<T>
 > => new Promise(resolve => {
   let fulfilledCount = 0;
-  const result: allSEttledOutputInterface<T> = Array(promises.length).fill(null)
-  .map<allSEttledOutputInterface<T>[0]>(
-    () => ({
-      status: allSettledStatusEnum.o,
-    }),
-  );
-
-  const timeoutId = setTimeout(
-    () => resolve(result),
-    timeout,
-  );
+  const result: allSEttledOutputInterface<T> = Array(promises.length).fill(null);
 
   promises.forEach(
     async (thisPromise, thisPromiseIndex) => thisPromise
@@ -62,8 +48,6 @@ export const allSettled = async <T>(
       .finally(() => {
         if (++fulfilledCount === promises.length) {
           resolve(result);
-
-          clearTimeout(timeoutId);
         }
       }),
   );
