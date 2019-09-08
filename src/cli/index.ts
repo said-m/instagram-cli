@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 
 import { Namespace } from 'argparse';
-import { createWriteStream, writeFile } from 'fs';
 import { join } from 'path';
-import { GetMedia, getPost } from '../lib/methods';
-import { allSettled, allSettledStatusEnum } from '../lib/utils/helpers/all-settled';
+import { getPost } from '../lib/methods';
+import { saveMedia, savePost } from './actions';
 import { cliFlags } from './flags';
 import { getFlagArgument } from './flags/utils/helpers';
 import { CliFlagsEnum } from './utils/enums/flags';
@@ -33,81 +32,43 @@ async function launch(): Promise<void> {
     return console.log('Не удалось получить данные публикации.');
   }
 
-  const locationName = idArg + ' - instagram-cli';
-  const currentFolder = process.cwd();
+  const isSubDir = mediaArg && postArg;
+  const saveName = `${ idArg } - instagram-cli`;
+  const dirPath = isSubDir
+    ? join(
+      process.cwd(),
+      saveName,
+    )
+    : process.cwd();
+
+  const isFolderCreated = await createDir(dirPath);
+
+  if (!isFolderCreated) {
+    return console.error('Ошибка при попытке создать папку для сохранения');
+  }
 
   if (postArg) {
-    const fileName = join(
-      locationName,
-      mediaArg ? 'data' : '',
-    ) + '.json';
-
     try {
-      writeFile(
-        join(currentFolder, fileName),
-        JSON.stringify(postData, null, 2),
-        () => console.log(`Данные публикации записаны в файл "${ fileName }"`),
-      );
-    } catch (error) {
-      console.error('Ошибка при записи данных публикации в файл:', error);
-    }
+      await savePost({
+        data: postData,
+        settings: {
+          dirPath,
+          fileName: isSubDir ? 'data' : saveName,
+        },
+      });
+    } catch {}
   }
 
   if (mediaArg) {
-    const media = await (new GetMedia()).byPostData(postData);
-
-    const folderPath = join(currentFolder, locationName);
-    const isFolderCreated = await createDir(folderPath);
-
-    if (!isFolderCreated) {
-      return console.error('Ошибка при попытке создать папку для сохранения медиа');
-    }
-
-    const downloads = [];
-    for (const thisMediaIndex in media) {
-      const thisMedia = await media[parseInt(thisMediaIndex)];
-
-      if (!thisMedia) {
-        continue;
-      }
-
-      const mediaFileName = thisMediaIndex + '.' + thisMedia.extension;
-      const filePath = join(folderPath, mediaFileName);
-
-      console.info(`Стартовало сохранение: ${ mediaFileName }`);
-
-      downloads.push(
-        new Promise(
-          resolve => thisMedia.stream.pipe(
-            createWriteStream(filePath),
-          ).on(
-            'close',
-            () => {
-              console.info(`Завершено сохранение: ${ mediaFileName }`);
-              resolve();
-            },
-          ),
-        ),
-      );
-    }
-
-    const downloaded = await allSettled(downloads);
-
-    downloaded.forEach(
-      (thisDownload, thisDownloadIndex) => {
-        if (thisDownload.status === allSettledStatusEnum.r) {
-          return console.error(
-            'Ошибка при сохранении медиа:',
-            thisDownloadIndex,
-            thisDownload.reason,
-          );
-        }
-      },
-    );
-
-    console.log(`Результат сохранения медиа ищите в папке ${
-      locationName
-    } в текущем каталоге`);
+    try {
+      await saveMedia({
+        data: postData,
+        settings: {
+          dirPath,
+          fileName: '',
+        },
+      });
+    } catch {}
   }
 }
 

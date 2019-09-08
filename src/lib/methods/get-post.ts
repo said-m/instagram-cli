@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import { post } from '../mappers/complex';
+import { isAxiosError } from '../utils/helpers/is-axios-error';
 import { IgResponseInterface, PostInterface } from '../utils/interfaces';
 
 export async function getPost(id: string): Promise<
@@ -27,7 +28,13 @@ export async function getPost(id: string): Promise<
 
       return data;
     } catch (error) {
-      console.error('Ошибка при загрузке данных:', error);
+      if (isAxiosError(error)) {
+        console.error('Ошибка при загрузке данных:', error.message);
+
+        return;
+      }
+
+      console.log('Неизвестная ошибка при загрузке данных:', error);
     }
   };
 
