@@ -2,7 +2,7 @@
 
 **Модуль** и **CLI** для вытягивания данных публикаций в **Instagram** без запросов к настоящей **API**-хе и авторизации.
 
-![npm](https://img.shields.io/npm/v/@said-m/instagram-cli?color=rgb%2868%2C%20204%2C%2017%29)
+![npm version](https://badge.fury.io/js/@said-m/instagram-cli.svg)
 [![Build Status](https://travis-ci.com/said-m/instagram-cli.svg?branch=master)](https://travis-ci.com/said-m/instagram-cli)
 
 ## Установка / Installing
