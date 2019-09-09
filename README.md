@@ -2,7 +2,7 @@
 
 **Модуль** и **CLI** для вытягивания данных публикаций в **Instagram** без запросов к настоящей **API**-хе и авторизации.
 
-![npm version](https://badge.fury.io/js/@said-m/instagram-cli.svg)
+[![npm version](https://badge.fury.io/js/%40said-m%2Finstagram-cli.svg)](https://badge.fury.io/js/%40said-m%2Finstagram-cli)
 [![Build Status](https://travis-ci.com/said-m/instagram-cli.svg?branch=master)](https://travis-ci.com/said-m/instagram-cli)
 
 ## Установка / Installing
@@ -13,7 +13,7 @@
 npm install -g @said-m/instagram-cli
 ```
 
-> Можно протестировать и без установки, см.: [Использование](#Использование--Usage); \
+> Можно протестировать и без установки, см. [Использование](#Использование--Usage); \
 > You can test it without installation, see [Usage](#Использование--Usage).
 
 ### NPM-module
@@ -38,6 +38,14 @@ npx @said-m/instagram-cli $POST_KEY -p -m
 
 > Список доступных команд и их предназначение: [Методы](#Методы--Methods) \
 > About flags, see [Methods](#Методы--Methods)
+
+#### Интерактивный режим / Interactive
+
+В данном режиме, скрипт будет поэтапно запрашивать данные в форме диалога.
+
+```bash
+instagram-cli $POST_KEY -i
+```
 
 ### NPM-module
 
@@ -70,7 +78,7 @@ instagram-cli -h
 
 ### Данные публикации / Post's data
 
-Возвращает json-объект со основной информацией о файле.
+Возвращает json-объект с основной информацией о файле.
 
 #### CLI
 
@@ -98,11 +106,9 @@ getPost(postKey).then(postData => {
 
 ### Медиа-файлы публикации / Media-files
 
-Возвращает json-объект со основной информацией о файле.
-
 #### CLI
 
-Будет создан json-файл с указанным содержимым.
+Будет создана папка со всеми медиа-файлами публикации (изображения и видео).
 
 ```bash
 instagram-cli $POST_KEY -m
