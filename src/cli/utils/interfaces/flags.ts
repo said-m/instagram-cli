@@ -11,6 +11,10 @@ export type FlagDecriptionInterface = [
   ArgumentOptions,
 ];
 
+export type ParamsInterface  = {
+  [key in CliFlagsEnum]: string | boolean;
+};
+
 export type FlagArgumentsInterface  = {
-  [key in CliFlagsEnum]: string;
+  [key in CliFlagsEnum]: boolean;
 };
