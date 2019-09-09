@@ -10,6 +10,10 @@
         "named": "never",
         "asyncArrow": "always"
       }
+    ],
+    "no-implicit-dependencies": [
+      true,
+      "dev"
     ]
   }
 }

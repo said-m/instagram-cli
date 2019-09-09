@@ -5,26 +5,30 @@ export enum allSettledStatusEnum {
   r = 'rejected',
 }
 
-export type allSEttledOutputInterface<Value> = Array<
-  {
-    status: allSettledStatusEnum.f,
-    value: Value,
-  } |
-  {
-    status: allSettledStatusEnum.r,
-    reason: Error,
-  }
+export type allSettledOutputInterface<Value> = Array<
+  AllSettledFulfilledInterface<Value> |
+  AllSettledRejectedInterface
 >;
+
+export interface AllSettledFulfilledInterface<Value> {
+  status: allSettledStatusEnum.f;
+  value: Value;
+}
+
+export interface AllSettledRejectedInterface {
+  status: allSettledStatusEnum.r;
+  reason: Error;
+}
 
 export const allSettled = async <T>(
   promises: Array<
     Promise<T>
   >,
 ): Promise<
-  allSEttledOutputInterface<T>
+  allSettledOutputInterface<T>
 > => new Promise(resolve => {
   let fulfilledCount = 0;
-  const result: allSEttledOutputInterface<T> = Array(promises.length).fill(null);
+  const result: allSettledOutputInterface<T> = Array(promises.length).fill(null);
 
   promises.forEach(
     async (thisPromise, thisPromiseIndex) => thisPromise

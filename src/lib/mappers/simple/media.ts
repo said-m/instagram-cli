@@ -1,4 +1,4 @@
-import { isSidecardsPost } from '../../utils/helpers/is-sidecards-post';
+import { isSidecardsPost } from '../../utils/helpers';
 import { IgMediaInterface, IgPostInterface, MediaItemInterface } from '../../utils/interfaces';
 import { sets, video } from '../simple';
 
