@@ -60,4 +60,4 @@ export const save = async (
       });
     } catch {}
   }
-}
+};
