@@ -20,10 +20,6 @@ async function launch(): Promise<void> {
   if (!hasProperty(args, CliFlagsEnum.id, 'string')) {
     return console.log('Необходимо указать ключ публикации');
   }
-  // FIXME: избавиться от этого, когда релизну `ts-has-property@1.1.1`
-  if (!args.shortcode) {
-    return;
-  }
 
   if (interactiveArg) {
     await interactiveCli({
@@ -38,8 +34,8 @@ async function launch(): Promise<void> {
     await save({
       data: {
         shortcode: args.shortcode,
-        post: postArg || false,
-        media: mediaArg || false,
+        post: postArg,
+        media: mediaArg,
       },
     });
   } catch {}

@@ -5,10 +5,10 @@ import { ParamsInterface } from '../../../utils/interfaces/flags';
 export const getFlagArgument = (
   args: Partial<ParamsInterface>,
   flag: CliFlagsEnum,
-): boolean | undefined => {
-  if (!hasProperty(args, flag, true)) {
-    return;
+): boolean => {
+  if (!hasProperty(args, flag, 'boolean')) {
+    return false;
   }
 
-  return !!args[flag];
+  return args[flag];
 };
