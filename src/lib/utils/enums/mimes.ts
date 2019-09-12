@@ -1,5 +1,5 @@
 
-export enum GetMediaMimesEnum {
+export enum MimesEnum {
   jpg = 'image/jpeg',
   png = 'image/png',
   gif = 'image/gif',

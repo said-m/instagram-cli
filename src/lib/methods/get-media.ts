@@ -2,15 +2,14 @@ import Axios, { AxiosResponse } from 'axios';
 import { Writable } from 'stream';
 import hasProperty from 'ts-has-property';
 import { getPost } from '.';
-import { mimes } from '../utils/constants';
-import { HttpHeadersEnum } from '../utils/enums';
+import { MIME_EXTENSIONS } from '../utils/constants';
+import { HttpHeadersEnum, MimesEnum } from '../utils/enums';
 import { extensionFromUrl } from '../utils/helpers';
 import { PostInterface } from '../utils/interfaces';
-import { GetMediaMimesEnum } from './utils/enums';
 import { GetMediaItemInterface, GetMediaOutputInterface } from './utils/interfaces';
 
 export class GetMedia {
-  static readonly allowedMimes: Array<GetMediaMimesEnum> = Object.values(GetMediaMimesEnum);
+  static readonly allowedMimes: Array<MimesEnum> = Object.values(MimesEnum);
 
   async byShortcode(name: string): Promise<
     GetMediaOutputInterface
@@ -55,12 +54,12 @@ export class GetMedia {
       stream: response.data,
       extension: fileMime === true
         ? extensionFromUrl(url) || 'unknown'
-        : mimes[fileMime].extensions[0],
+        : MIME_EXTENSIONS[fileMime],
     };
   }
 
   private async isExistMedia(url: string, isStrict = true): Promise<
-    GetMediaMimesEnum | boolean
+    MimesEnum | boolean
   > {
     try {
       const { headers } = await Axios.head<void>(url);
