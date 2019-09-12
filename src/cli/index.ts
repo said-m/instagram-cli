@@ -7,6 +7,7 @@ import { getFlagArgument } from './flags/utils/helpers';
 import { interactiveCli } from './interactive';
 import { save } from './save';
 import { CliFlagsEnum } from './utils/enums/flags';
+import { parseShortcode } from './utils/helpers';
 import { ParamsInterface } from './utils/interfaces/flags';
 
 async function launch(): Promise<void> {
@@ -21,6 +22,8 @@ async function launch(): Promise<void> {
     return console.log('Необходимо указать ключ публикации');
   }
 
+  const shortcode = parseShortcode(args.shortcode);
+
   if (interactiveArg) {
     await interactiveCli({
       data: args,
@@ -33,7 +36,7 @@ async function launch(): Promise<void> {
   try {
     await save({
       data: {
-        shortcode: args.shortcode,
+        shortcode,
         post: postArg,
         media: mediaArg,
       },
